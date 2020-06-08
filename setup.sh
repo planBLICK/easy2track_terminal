@@ -1,7 +1,8 @@
 #!/bin/sh
-while ! ping -c 1 -n -w 1 https://github.com &> /dev/null
+while ! ping -c 1 -n -w 1 github.com &> /dev/null
 do
     printf "%c" "."
+    sleep 2
 done
 
 cd /usr/bin/
