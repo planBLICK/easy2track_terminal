@@ -9,7 +9,7 @@ Environment="XAUTHORITY=/home/pi/.Xauthority"
 Type=simple
 User=pi
 WorkingDirectory=/home/pi/easy2track/app
-ExecStart=/home/pi/easy2track/app/run.sh
+ExecStart=/home/pi/easy2track/setup.sh
 
 [Install]
 WantedBy=graphical.target
