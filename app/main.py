@@ -178,7 +178,7 @@ class Easy2Track:
 
                 #image = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
                 image = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
-                (thresh, image) = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)
+                #(thresh, image) = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)
                 image = ImageOps.mirror(Image.fromarray(image))
 
                 codes = decode(image)
