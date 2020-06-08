@@ -4,10 +4,12 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
+Environment="DISPLAY=:0"
+Environment="XAUTHORITY=/home/pi/.Xauthority"
 Type=simple
 User=pi
 WorkingDirectory=/home/pi/easy2track/app
 ExecStart=/home/pi/easy2track/app/run.sh
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=graphical.target
