@@ -257,7 +257,7 @@ class Easy2Track:
                     self.panel.image = display_image
                     self.panel.place(relx=.5, rely=.5, anchor="center")
                 else:
-                    self.panel.configure(image=image)
+                    self.panel.configure(image=display_image)
                     self.panel.image = display_image
                     self.panel.config(highlightbackground="green")
 
