@@ -210,7 +210,7 @@ class Easy2Track:
                 image = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
                 display_image = copy.deepcopy(image)
 
-                alpha = 3.0  # Contrast control (1.0-3.0)
+                alpha = 1.7  # Contrast control (1.0-3.0)
                 beta = 0  # Brightness control (0-100)
 
                 image = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
