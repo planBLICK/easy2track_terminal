@@ -15,15 +15,26 @@ import hashlib
 import json
 import traceback
 from ample import Ample
-
+import os
 
 class Easy2Track:
     def __init__(self, vs, username, password):
         self.ample = Ample()
         self.ample.test().red()
 
-        self.username = username
-        self.password = password
+        config_filename = '/home/pi/easy2track/app/login_data.json'
+        if os.path.isfile(config_filename):
+            with open(config_filename) as json_file:
+                data = json.load(json_file)
+                self.username = data.get("login", "")
+                self.password = data.get("password", "")
+        else:
+            os.system("/home/pi/easy2track/app/init_app.py")
+            with open(config_filename) as json_file:
+                data = json.load(json_file)
+                self.username = data.get("login", "")
+                self.password = data.get("password", "")
+
         self.apikey = None
         self.perform_login()
         self.vs = vs
