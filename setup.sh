@@ -16,3 +16,4 @@ sudo systemctl daemon-reload
 systemctl status easy2track_terminal.service
 sudo systemctl enable easy2track_terminal.service
 sudo systemctl start easy2track_terminal.service
+sleep 3
