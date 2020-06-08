@@ -34,7 +34,7 @@ class Easy2Track:
         self.root = tki.Tk()
         self.root.attributes('-zoomed', True)
         self.root.attributes('-fullscreen', True)
-        bg_image = Image.open("bg.png")
+        bg_image = Image.open("./bg.png")
         self.background_image = ImageTk.PhotoImage(bg_image)
         self.bg_label = tki.Label(self.root, image=self.background_image)
         self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
