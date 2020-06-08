@@ -198,11 +198,11 @@ class Easy2Track:
                 image = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
                 display_image = copy.deepcopy(image)
 
-                angle = determine_skew(image)
-                image = rotate(image, angle, (0, 0, 0))
+                #angle = determine_skew(image)
+                #image = rotate(image, angle, (0, 0, 0))
                 # (thresh, image) = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)
                 display_image = ImageOps.mirror(Image.fromarray(display_image))
-                image = ImageOps.mirror(Image.fromarray(image))
+                #image = ImageOps.mirror(Image.fromarray(image))
 
                 codes = decode(image)
 
