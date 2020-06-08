@@ -1,9 +1,11 @@
 #!/bin/sh
-while ! ping -c 1 -n -w 1 github.com 
+while ! ping -c 1 -n -w 1 github.com
 do
     printf "%c" "."
     sleep 2
 done
+
+printf "Starting Easy2Track update now"
 
 cd /usr/bin/
 ./git clone "https://github.com/planBLICK/easy2track_terminal.git" "/home/pi/easy2track/" 2> /dev/null || (cd "/home/pi/easy2track/"; git fetch; git reset --hard origin/live;  git pull; )
