@@ -16,6 +16,24 @@ import json
 import traceback
 from ample import Ample
 import os
+from typing import Tuple, Union
+import numpy as np
+import math
+from deskew import determine_skew
+
+
+def rotate(image: np.ndarray, angle: float, background: Union[int, Tuple[int, int, int]]) -> np.ndarray:
+    old_width, old_height = image.shape[:2]
+    angle_radian = math.radians(angle)
+    width = abs(np.sin(angle_radian) * old_height) + abs(np.cos(angle_radian) * old_width)
+    height = abs(np.sin(angle_radian) * old_width) + abs(np.cos(angle_radian) * old_height)
+
+    image_center = tuple(np.array(image.shape[1::-1]) / 2)
+    rot_mat = cv2.getRotationMatrix2D(image_center, angle, 1.0)
+    rot_mat[1, 2] += (width - old_width) / 2
+    rot_mat[0, 2] += (height - old_height) / 2
+    return cv2.warpAffine(image, rot_mat, (int(round(height)), int(round(width))), borderValue=background)
+
 
 class Easy2Track:
     def __init__(self, vs, username, password):
@@ -81,7 +99,6 @@ class Easy2Track:
         else:
             return False
 
-
     def is_checked_in(self, data):
         hash = hashlib.md5(data.encode("utf-8")).hexdigest()
         url = "https://api.planblick.com/easy2track/is_checkedin"
@@ -114,12 +131,12 @@ class Easy2Track:
         url = "https://api.planblick.com/es/cmd/addContact"
 
         payload = json.dumps({
-                        "consumer": "demo",
-                        "login": "demo_1",
-                        "form_data": form_data,
-                        "addedtime": time.strftime('%Y-%m-%d %H:%M:%S'),
-                        "external_id": ""
-                    })
+            "consumer": "demo",
+            "login": "demo_1",
+            "form_data": form_data,
+            "addedtime": time.strftime('%Y-%m-%d %H:%M:%S'),
+            "external_id": ""
+        })
         headers = {
             'apikey': self.apikey,
             'Content-Type': 'application/json'
@@ -127,7 +144,7 @@ class Easy2Track:
 
         response = requests.request("POST", url, headers=headers, data=payload)
         print("CKECKIN_RESPONSE", response.text)
-        if response.status_code==200:
+        if response.status_code == 200:
             return True
         else:
             return False
@@ -136,12 +153,12 @@ class Easy2Track:
         url = "https://api.planblick.com/es/cmd/removeContact"
 
         payload = json.dumps({
-                        "consumer": "demo",
-                        "login": "demo_1",
-                        "form_data": form_data,
-                        "deletedtime": time.strftime('%Y-%m-%d %H:%M:%S'),
-                        "external_id": ""
-                    })
+            "consumer": "demo",
+            "login": "demo_1",
+            "form_data": form_data,
+            "deletedtime": time.strftime('%Y-%m-%d %H:%M:%S'),
+            "external_id": ""
+        })
         headers = {
             'apikey': self.apikey,
             'Content-Type': 'application/json'
@@ -176,9 +193,11 @@ class Easy2Track:
                 self.frame = self.vs.read()
                 self.frame = imutils.resize(self.frame, width=800)
 
-                #image = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
+                # image = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
                 image = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
-                #(thresh, image) = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)
+                angle = determine_skew(image)
+                image = rotate(image, angle, (0, 0, 0))
+                # (thresh, image) = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)
                 image = ImageOps.mirror(Image.fromarray(image))
 
                 codes = decode(image)
@@ -188,7 +207,6 @@ class Easy2Track:
                         self.panel.place_forget()
 
                     self.status.place(relx=.5, rely=.5, anchor="center")
-
 
                     for code in codes:
                         try:
@@ -257,19 +275,19 @@ class Easy2Track:
         self.root.quit()
 
 
-
 # import the necessary packages
 from imutils.video import VideoStream
 import argparse
 import time
+
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-u", "--username", required=True,
-	help="Crowdsoft username")
+                help="Crowdsoft username")
 ap.add_argument("-p", "--password", required=True,
-	help="Crodwosft password")
+                help="Crodwosft password")
 ap.add_argument("-c", "--picamera", type=int, default=-1,
-	help="whether or not the Raspberry Pi camera should be used")
+                help="whether or not the Raspberry Pi camera should be used")
 args = vars(ap.parse_args())
 # initialize the video stream and allow the camera sensor to warmup
 print("[INFO] warming up camera...")

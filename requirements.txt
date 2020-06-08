@@ -3,3 +3,4 @@ pillow
 imutils
 opencv-contrib-python==3.4.3.18
 pyzbar
+deskew
