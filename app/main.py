@@ -174,7 +174,7 @@ class Easy2Track:
         try:
             while not self.stopEvent.is_set():
                 self.frame = self.vs.read()
-                self.frame = imutils.resize(self.frame, width=600)
+                self.frame = imutils.resize(self.frame, width=300)
 
                 image = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
                 image = ImageOps.mirror(Image.fromarray(image))
