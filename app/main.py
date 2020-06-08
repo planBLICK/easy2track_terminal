@@ -250,15 +250,15 @@ class Easy2Track:
                     self.panel.place(relx=.5, rely=.5, anchor="center")
                     self.status.place_forget()
 
-                image = ImageTk.PhotoImage(image)
+                display_image = ImageTk.PhotoImage(display_image)
 
                 if self.panel is None:
-                    self.panel = tki.Label(image=image)
-                    self.panel.image = image
+                    self.panel = tki.Label(image=display_image)
+                    self.panel.image = display_image
                     self.panel.place(relx=.5, rely=.5, anchor="center")
                 else:
                     self.panel.configure(image=image)
-                    self.panel.image = image
+                    self.panel.image = display_image
                     self.panel.config(highlightbackground="green")
 
         except RuntimeError as e:
