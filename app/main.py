@@ -76,7 +76,7 @@ class Easy2Track:
 
         response = request.get(url)
         self.apikey = response.json().get("apikey")
-        if len(self.apikey) > 0:
+        if self.apikey is not None and len(self.apikey) > 0:
             return True
         else:
             return False
