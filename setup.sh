@@ -1,5 +1,5 @@
 #!/bin/sh
-while ! ping -c 1 -n -w 1 github.com &> /dev/null
+while ! ping -c 1 -n -w 1 github.com 
 do
     printf "%c" "."
     sleep 2
