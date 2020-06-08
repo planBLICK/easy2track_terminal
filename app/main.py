@@ -81,6 +81,7 @@ class Easy2Track:
         if response.status_code == 200:
             is_checked_in = response.json().get("result")
         else:
+            traceback.print_exc()
             raise Exception("Fehler bei der Überprüfung. Bitte versuchen Sie es erneut. ")
 
         if is_checked_in is not None:
@@ -88,6 +89,7 @@ class Easy2Track:
             return is_checked_in
             pass
         else:
+            traceback.print_exc()
             raise Exception("Fehler bei der Überprüfung. Bitte versuchen Sie es erneut. ")
             pass
         print("RESPONSE", response.text)
@@ -221,6 +223,7 @@ class Easy2Track:
 
         except RuntimeError as e:
             print("[INFO] caught a RuntimeError")
+            traceback.print_exc()
         except Exception as e:
             print(e)
             traceback.print_exc()
