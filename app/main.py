@@ -210,14 +210,14 @@ class Easy2Track:
                 image = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
                 display_image = copy.deepcopy(image)
 
-                alpha = 1.5  # Contrast control (1.0-3.0)
+                alpha = 3.0  # Contrast control (1.0-3.0)
                 beta = 0  # Brightness control (0-100)
 
                 image = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
                 display_image = cv2.convertScaleAbs(display_image, alpha=alpha, beta=beta)
 
-                image = unsharp_mask(image)
-                display_image = unsharp_mask(display_image)
+                #image = unsharp_mask(image)
+                #display_image = unsharp_mask(display_image)
                 #angle = determine_skew(image)
                 #image = rotate(image, angle, (0, 0, 0))
                 # (thresh, image) = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)
