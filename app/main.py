@@ -202,6 +202,7 @@ class Easy2Track:
                 image = rotate(image, angle, (0, 0, 0))
                 # (thresh, image) = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)
                 display_image = ImageOps.mirror(Image.fromarray(display_image))
+                image = ImageOps.mirror(Image.fromarray(image))
 
                 codes = decode(image)
 
