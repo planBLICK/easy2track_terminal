@@ -13,4 +13,4 @@ ExecStart=/home/pi/easy2track/app/run.sh
 Restart=always
 
 [Install]
-WantedBy=graphical.target
+WantedBy=graphical.target 
