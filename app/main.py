@@ -36,6 +36,18 @@ def rotate(image: np.ndarray, angle: float, background: Union[int, Tuple[int, in
     return cv2.warpAffine(image, rot_mat, (int(round(height)), int(round(width))), borderValue=background)
 
 
+def unsharp_mask(image, kernel_size=(5, 5), sigma=1.0, amount=1.0, threshold=0):
+    """Return a sharpened version of the image, using an unsharp mask."""
+    blurred = cv2.GaussianBlur(image, kernel_size, sigma)
+    sharpened = float(amount + 1) * image - float(amount) * blurred
+    sharpened = np.maximum(sharpened, np.zeros(sharpened.shape))
+    sharpened = np.minimum(sharpened, 255 * np.ones(sharpened.shape))
+    sharpened = sharpened.round().astype(np.uint8)
+    if threshold > 0:
+        low_contrast_mask = np.absolute(image - blurred) < threshold
+        np.copyto(sharpened, image, where=low_contrast_mask)
+    return sharpened
+
 class Easy2Track:
     def __init__(self, vs, username, password):
         self.ample = Ample()
@@ -204,6 +216,8 @@ class Easy2Track:
                 image = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
                 display_image = cv2.convertScaleAbs(display_image, alpha=alpha, beta=beta)
 
+                image = unsharp_mask(image)
+                display_image = unsharp_mask(display_image)
                 #angle = determine_skew(image)
                 #image = rotate(image, angle, (0, 0, 0))
                 # (thresh, image) = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)
