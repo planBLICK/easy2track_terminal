@@ -22,21 +22,22 @@ class Easy2Track:
         self.ample = Ample()
         self.ample.test().red()
 
+        self.apikey = None
+
         config_filename = '/home/pi/easy2track/app/login_data.json'
         if os.path.isfile(config_filename):
             with open(config_filename) as json_file:
                 data = json.load(json_file)
                 self.username = data.get("login", "")
                 self.password = data.get("password", "")
-        else:
+
+        while not self.perform_login():
             os.system("/home/pi/easy2track/app/init_app.py")
             with open(config_filename) as json_file:
                 data = json.load(json_file)
                 self.username = data.get("login", "")
                 self.password = data.get("password", "")
 
-        self.apikey = None
-        self.perform_login()
         self.vs = vs
         self.frame = None
         self.thread = None
@@ -75,6 +76,10 @@ class Easy2Track:
 
         response = request.get(url)
         self.apikey = response.json().get("apikey")
+        if len(self.apikey) > 0:
+            return True
+        else:
+            return False
 
 
     def is_checked_in(self, data):
