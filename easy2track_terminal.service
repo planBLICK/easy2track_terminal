@@ -10,6 +10,7 @@ Type=simple
 User=pi
 WorkingDirectory=/home/pi/easy2track/app
 ExecStart=/home/pi/easy2track/setup.sh
+Restart=always
 
 [Install]
 WantedBy=graphical.target
