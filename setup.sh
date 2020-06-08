@@ -6,6 +6,7 @@ chmod +x /home/pi/easy2track/setup.sh
 chmod +x /home/pi/easy2track/app/run.sh
 
 sudo cp /home/pi/easy2track/easy2track_terminal.service /etc/systemd/system
+sudo systemctl daemon-reload
 systemctl status easy2track_terminal.service
 sudo systemctl enable easy2track_terminal.service
 sudo systemctl start easy2track_terminal.service
