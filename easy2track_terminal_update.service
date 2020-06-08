@@ -7,7 +7,7 @@ After=network-online.target
 Environment="DISPLAY=:0"
 Environment="XAUTHORITY=/home/pi/.Xauthority"
 Type=simple
-User=pi
+User=root
 WorkingDirectory=/home/pi/easy2track
 ExecStart=/home/pi/easy2track/setup.sh
 Restart=on-failure
