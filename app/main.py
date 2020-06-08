@@ -20,6 +20,7 @@ from typing import Tuple, Union
 import numpy as np
 import math
 from deskew import determine_skew
+import copy
 
 
 def rotate(image: np.ndarray, angle: float, background: Union[int, Tuple[int, int, int]]) -> np.ndarray:
@@ -191,14 +192,16 @@ class Easy2Track:
         try:
             while not self.stopEvent.is_set():
                 self.frame = self.vs.read()
-                self.frame = imutils.resize(self.frame, width=800)
+                self.frame = imutils.resize(self.frame, width=600)
 
                 # image = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
                 image = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
+                display_image = copy.deepcopy(image)
+
                 angle = determine_skew(image)
                 image = rotate(image, angle, (0, 0, 0))
                 # (thresh, image) = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)
-                image = ImageOps.mirror(Image.fromarray(image))
+                display_image = ImageOps.mirror(Image.fromarray(display_image))
 
                 codes = decode(image)
 
