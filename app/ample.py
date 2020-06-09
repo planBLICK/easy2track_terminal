@@ -7,9 +7,9 @@ class Ample:
     def __init__(self):
         GPIO.setwarnings(True)
         GPIO.setmode(GPIO.BCM)
-        self._red = {"pin": 21, "status": True}
-        self._yellow = {"pin": 16, "status": False}
-        self._green = {"pin": 20, "status": False}
+        self._red = {"pin": 16, "status": True}
+        self._yellow = {"pin": 20, "status": False}
+        self._green = {"pin": 21, "status": False}
         GPIO.setup(self._red.get("pin"), GPIO.OUT)
         GPIO.setup(self._yellow.get("pin"), GPIO.OUT)
         GPIO.setup(self._green.get("pin"), GPIO.OUT)
