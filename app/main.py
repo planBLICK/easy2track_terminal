@@ -265,7 +265,7 @@ class Easy2Track:
                                 self.status["text"] = self.failure_message
                                 self.ample.red().blink()
 
-                    sleep(3)
+                    sleep(1)
 
                     self.panel.place(relx=.5, rely=.5, anchor="center")
                     self.status.place_forget()
