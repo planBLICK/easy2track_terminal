@@ -49,13 +49,15 @@ def unsharp_mask(image, kernel_size=(5, 5), sigma=1.0, amount=1.0, threshold=0):
     return sharpened
 
 class Easy2Track:
-    def __init__(self, vs, username, password):
+    def __init__(self, vs, username="None", password="None"):
         self.ample = Ample()
         self.ample.test().red()
 
+        self.username = username
+        self.password = password
         self.apikey = None
 
-        config_filename = '/home/pi/easy2track/app/login_data.json'
+        config_filename = './login_data.json'
         if os.path.isfile(config_filename):
             with open(config_filename) as json_file:
                 data = json.load(json_file)
@@ -63,7 +65,7 @@ class Easy2Track:
                 self.password = data.get("password", "")
 
         while not self.perform_login():
-            os.system("/home/pi/easy2track/app/init_app.py")
+            os.system("./init_app.py")
             with open(config_filename) as json_file:
                 data = json.load(json_file)
                 self.username = data.get("login", "")
@@ -75,9 +77,9 @@ class Easy2Track:
         self.stopEvent = None
 
         self.root = tki.Tk()
-        self.root.attributes('-zoomed', True)
+        #self.root.attributes('-zoomed', True)
         self.root.attributes('-fullscreen', True)
-        bg_image = Image.open("/home/pi/easy2track/app/bg.png")
+        bg_image = Image.open("./bg.png")
         self.background_image = ImageTk.PhotoImage(bg_image)
         self.bg_label = tki.Label(self.root, image=self.background_image)
         self.bg_label.place(x=0, y=0, relwidth=1, relheight=1)
@@ -306,9 +308,9 @@ import time
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-u", "--username", required=True,
+ap.add_argument("-u", "--username", required=False,
                 help="Crowdsoft username")
-ap.add_argument("-p", "--password", required=True,
+ap.add_argument("-p", "--password", required=False,
                 help="Crodwosft password")
 ap.add_argument("-c", "--picamera", type=int, default=-1,
                 help="whether or not the Raspberry Pi camera should be used")

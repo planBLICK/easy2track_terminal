@@ -5,7 +5,7 @@ from time import sleep
 def save_login_data():
     button.grid_remove()
     login_data = {"login": e1.get(), "password": e2.get()}
-    with open("/home/pi/easy2track/app/login_data.json", "w") as file:
+    with open("./login_data.json", "w") as file:
         file.write(json.dumps(login_data))
 
     master.destroy()

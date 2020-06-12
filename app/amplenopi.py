@@ -1,11 +1,4 @@
-import platform
-if "Linux pi" in platform._syscmd_uname('-a'):
-    from amplepi import AmplePi
-else:
-    from amplenopi import AmpleNoPi
-
-
-class Ample(AmplePi if "Linux pi" in platform._syscmd_uname('-a') else AmpleNoPi):
+class AmpleNoPi:
 
     def __init__(self):
         pass
