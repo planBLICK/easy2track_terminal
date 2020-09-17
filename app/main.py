@@ -115,7 +115,11 @@ class Easy2Track:
             return False
 
     def is_checked_in(self, data):
-        hash = hashlib.md5(data.encode("utf-8")).hexdigest()
+        hash = None
+        if type(data) == dict:
+            hash = data.get("hash")
+        if hash is None:
+            hash = hashlib.md5(data.encode("utf-8")).hexdigest()
         url = "https://api.planblick.com/easy2track/is_checkedin"
         print("HASH", hash)
         payload = json.dumps({"hash": hash})
@@ -143,15 +147,25 @@ class Easy2Track:
         print("RESPONSE", response.text)
 
     def check_in(self, form_data):
-        url = "https://api.planblick.com/es/cmd/addContact"
-
-        payload = json.dumps({
-            "consumer": "demo",
-            "login": "demo_1",
-            "form_data": form_data,
-            "addedtime": time.strftime('%Y-%m-%d %H:%M:%S'),
-            "external_id": ""
-        })
+        if type(form_data) == dict and form_data.get("hash") is not None and form_data.get("id") is not None:
+            url = "https://api.planblick.com/es/cmd/addContactV2"
+            payload = json.dumps({
+                "consumer": "demo",
+                "login": "demo_1",
+                "hash": form_data.get("hash"),
+                "id": form_data.get("id"),
+                "addedtime": time.strftime('%Y-%m-%d %H:%M:%S'),
+                "external_id": form_data.get("id")
+            })
+        else:
+            url = "https://api.planblick.com/es/cmd/addContact"
+            payload = json.dumps({
+                "consumer": "demo",
+                "login": "demo_1",
+                "form_data": form_data,
+                "addedtime": time.strftime('%Y-%m-%d %H:%M:%S'),
+                "external_id": ""
+            })
         headers = {
             'apikey': self.apikey,
             'Content-Type': 'application/json'
@@ -167,13 +181,24 @@ class Easy2Track:
     def check_out(self, form_data):
         url = "https://api.planblick.com/es/cmd/removeContact"
 
-        payload = json.dumps({
-            "consumer": "demo",
-            "login": "demo_1",
-            "form_data": form_data,
-            "deletedtime": time.strftime('%Y-%m-%d %H:%M:%S'),
-            "external_id": ""
-        })
+        if type(form_data) == dict and form_data.get("hash") is not None and form_data.get("id") is not None:
+            payload = json.dumps({
+                "consumer": "demo",
+                "login": "demo_1",
+                "hash": form_data.get("hash"),
+                "id": form_data.get("id"),
+                "deletedtime": time.strftime('%Y-%m-%d %H:%M:%S'),
+                "external_id": form_data.get("id"),
+            })
+        else:
+            payload = json.dumps({
+                "consumer": "demo",
+                "login": "demo_1",
+                "form_data": form_data,
+                "deletedtime": time.strftime('%Y-%m-%d %H:%M:%S'),
+                "external_id": ""
+            })
+
         headers = {
             'apikey': self.apikey,
             'Content-Type': 'application/json'
@@ -248,7 +273,8 @@ class Easy2Track:
                             self.ample.red().blink()
                             print("Not a valid qrcode or not recognized properly")
                             continue
-                        data = data.get("data")
+                        if(data.get("data") is not None):
+                            data = data.get("data")
 
                         if not self.is_checked_in(data):
                             print("TRY TO CHECKIN")
